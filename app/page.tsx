@@ -7,43 +7,43 @@ import { AchievementsSection } from "@/components/achievements-section"
 import { ContactSection } from "@/components/contact-section"
 import { Footer } from "@/components/footer"
 import { Navigation } from "@/components/navigation"
-import { ParticleBackground } from "@/components/particle-background"
 import { AIAssistant } from "@/components/ai-assistant"
-import { FloatingAIOrbs } from "@/components/floating-ai-orbs"
 import { AIChatBubble } from "@/components/ai-chat-bubble"
+import { ParticleBackground } from "@/components/particle-background"
 import { ThreeDimensionalAIAssistant } from "@/components/3d-ai-assistant"
 
 export default function Home() {
   return (
     <main className="relative min-h-screen bg-gradient-to-br from-slate-900 via-indigo-900 to-slate-900">
       <ParticleBackground />
-      <FloatingAIOrbs />
       <Navigation />
-      <section id="home">
+      <section id="home" className="relative">
         <HeroSection />
+        <div className="hidden lg:block">
+          <ThreeDimensionalAIAssistant />
+        </div>
       </section>
-      <section id="about">
+      <section id="about" className="relative">
         <AboutSection />
       </section>
-      <section id="projects">
+      <section id="projects" className="relative">
         <ProjectsSection />
       </section>
-      <section id="experience">
+      <section id="experience" className="relative">
         <ExperienceSection />
       </section>
-      <section id="skills">
+      <section id="skills" className="relative">
         <SkillsSection />
       </section>
-      <section id="achievements">
+      <section id="achievements" className="relative">
         <AchievementsSection />
       </section>
-      <section id="contact">
+      <section id="contact" className="relative">
         <ContactSection />
       </section>
       <Footer />
       <AIAssistant />
       <AIChatBubble />
-      <ThreeDimensionalAIAssistant />
     </main>
   )
 }

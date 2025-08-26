@@ -86,7 +86,11 @@ export function AIChatBubble() {
               <input
                 type="text"
                 value={input}
-                onChange={(e) => setInput(e.target.value)}
+                onChange={(e) => {
+                  if (e?.target?.value !== undefined) {
+                    setInput(e.target.value)
+                  }
+                }}
                 onKeyPress={(e) => e.key === "Enter" && handleSend()}
                 placeholder="Ask about Sanjay..."
                 className="flex-1 px-3 py-2 bg-transparent border border-cyan-400/30 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-cyan-400"

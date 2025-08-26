@@ -81,9 +81,20 @@ export function ContactSection() {
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    if (!e || !e.target) {
+      console.log("[v0] Event or target is undefined in handleChange")
+      return
+    }
+
+    const { name, value } = e.target
+    if (name === undefined || value === undefined) {
+      console.log("[v0] Name or value is undefined:", { name, value })
+      return
+    }
+
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value,
+      [name]: value,
     })
   }
 

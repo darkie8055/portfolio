@@ -1,7 +1,7 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-@custom-variant dark (&:is(.dark *));
+/* Removed dark mode custom variant */
 
 :root {
   --background: #0a0a0f;
@@ -49,40 +49,7 @@
   --cyber-yellow: #ffff00;
 }
 
-.dark {
-  --background: #0a0a0f;
-  --foreground: #ffffff;
-  --card: #1a1a2e;
-  --card-foreground: #ffffff;
-  --popover: #16213e;
-  --popover-foreground: #ffffff;
-  --primary: #00d4ff;
-  --primary-foreground: #000000;
-  --secondary: #ff6b6b;
-  --secondary-foreground: #ffffff;
-  --muted: #16213e;
-  --muted-foreground: #a0a9c0;
-  --accent: #4ecdc4;
-  --accent-foreground: #000000;
-  --destructive: #ff4757;
-  --destructive-foreground: #ffffff;
-  --border: #2d3748;
-  --input: #1a1a2e;
-  --ring: rgba(0, 212, 255, 0.5);
-  --chart-1: #00d4ff;
-  --chart-2: #ff6b6b;
-  --chart-3: #4ecdc4;
-  --chart-4: #ffa726;
-  --chart-5: #ab47bc;
-  --sidebar: #0a0a0f;
-  --sidebar-foreground: #ffffff;
-  --sidebar-primary: #00d4ff;
-  --sidebar-primary-foreground: #000000;
-  --sidebar-accent: #4ecdc4;
-  --sidebar-accent-foreground: #000000;
-  --sidebar-border: #2d3748;
-  --sidebar-ring: rgba(0, 212, 255, 0.5);
-}
+/* Removed all dark mode styles and cosmic theme effects */
 
 @theme inline {
   --color-background: var(--background);
@@ -264,6 +231,8 @@
   }
 }
 
+/* Removed all black hole and cosmic animation effects */
+
 .float-animation {
   animation: float 8s ease-in-out infinite;
 }
@@ -330,6 +299,8 @@
   box-shadow: 0 0 20px var(--neon-pink);
 }
 
+/* Removed dark mode scrollbar styles */
+
 /* Smooth scrolling behavior for navigation */
 html {
   scroll-behavior: smooth;
@@ -382,3 +353,5 @@ textarea:focus-visible {
     border: 1px solid #ccc !important;
   }
 }
+
+/* Removed all dark mode specific styles and cosmic effects */

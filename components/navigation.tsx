@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
-import { ThemeToggle } from "@/components/theme-toggle"
 import { Menu, X } from "lucide-react"
 
 const navItems = [
@@ -57,22 +56,21 @@ export function Navigation() {
         isScrolled ? "bg-background/80 backdrop-blur-md border-b border-border" : "bg-transparent"
       }`}
     >
-      <div className="container mx-auto px-4 py-4">
+      <div className="container mx-auto px-3 sm:px-4 lg:px-6 py-3 sm:py-4">
         <div className="flex items-center justify-between">
           <div
-            className="text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent cursor-pointer"
+            className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent cursor-pointer"
             onClick={() => scrollToSection("#home")}
           >
             SBK
           </div>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
+          <div className="hidden md:flex items-center space-x-4 lg:space-x-8">
             {navItems.map((item) => (
               <button
                 key={item.href}
                 onClick={() => scrollToSection(item.href)}
-                className={`text-foreground hover:text-primary transition-colors duration-200 relative group ${
+                className={`text-sm lg:text-base text-foreground hover:text-primary transition-colors duration-200 relative group px-2 py-1 ${
                   activeSection === item.href.substring(1) ? "text-primary" : ""
                 }`}
               >
@@ -84,28 +82,29 @@ export function Navigation() {
                 />
               </button>
             ))}
-            <ThemeToggle />
           </div>
 
-          {/* Mobile Navigation */}
-          <div className="md:hidden flex items-center space-x-4">
-            <ThemeToggle />
-            <Button variant="ghost" size="icon" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
-              {isMobileMenuOpen ? <X /> : <Menu />}
+          <div className="md:hidden flex items-center">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="h-10 w-10 sm:h-12 sm:w-12"
+            >
+              {isMobileMenuOpen ? <X className="h-5 w-5 sm:h-6 sm:w-6" /> : <Menu className="h-5 w-5 sm:h-6 sm:w-6" />}
             </Button>
           </div>
         </div>
 
-        {/* Mobile Menu */}
         {isMobileMenuOpen && (
-          <div className="md:hidden mt-4 py-4 border-t border-border">
-            <div className="flex flex-col space-y-4">
+          <div className="md:hidden mt-3 sm:mt-4 py-3 sm:py-4 border-t border-border animate-in slide-in-from-top-2 duration-200">
+            <div className="flex flex-col space-y-3 sm:space-y-4">
               {navItems.map((item) => (
                 <button
                   key={item.href}
                   onClick={() => scrollToSection(item.href)}
-                  className={`text-left text-foreground hover:text-primary transition-colors duration-200 ${
-                    activeSection === item.href.substring(1) ? "text-primary" : ""
+                  className={`text-left text-base sm:text-lg text-foreground hover:text-primary transition-colors duration-200 py-2 px-2 rounded-md hover:bg-muted/50 ${
+                    activeSection === item.href.substring(1) ? "text-primary bg-muted/30" : ""
                   }`}
                 >
                   {item.label}

@@ -121,7 +121,11 @@ export function AIAssistant() {
             <div className="flex gap-2">
               <Input
                 value={input}
-                onChange={(e) => setInput(e.target.value)}
+                onChange={(e) => {
+                  if (e?.target?.value !== undefined) {
+                    setInput(e.target.value)
+                  }
+                }}
                 placeholder="Ask me anything..."
                 onKeyPress={(e) => e.key === "Enter" && handleSend()}
                 className="text-sm"

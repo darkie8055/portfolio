@@ -1,190 +1,10 @@
 "use client"
 
-import { useRef, useState, useEffect, useMemo } from "react"
+import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { ArrowDown, Github, Linkedin, Mail, Zap, Cpu, Brain } from "lucide-react"
-import { Canvas, useFrame } from "@react-three/fiber"
-import { OrbitControls, Sphere, MeshDistortMaterial, Text, Float, Stars } from "@react-three/drei"
-import type * as THREE from "three"
-
-function AnimatedSphere() {
-  const meshRef = useRef<THREE.Mesh>(null)
-  const [hovered, setHovered] = useState(false)
-
-  useFrame((state) => {
-    if (meshRef.current) {
-      meshRef.current.rotation.x = state.clock.elapsedTime * 0.2
-      meshRef.current.rotation.y = state.clock.elapsedTime * 0.3
-      meshRef.current.scale.setScalar(hovered ? 1.8 : 1.5)
-    }
-  })
-
-  return (
-    <Float speed={1.5} rotationIntensity={0.5} floatIntensity={1}>
-      <Sphere
-        ref={meshRef}
-        args={[1, 64, 64]}
-        scale={1.5}
-        onPointerEnter={() => setHovered(true)}
-        onPointerLeave={() => setHovered(false)}
-      >
-        <MeshDistortMaterial
-          color={hovered ? "#4f46e5" : "#06b6d4"}
-          attach="material"
-          distort={0.3}
-          speed={1.5}
-          roughness={0.2}
-          transparent
-          opacity={0.7}
-        />
-      </Sphere>
-    </Float>
-  )
-}
-
-function FloatingAstronaut() {
-  const astronautRef = useRef<THREE.Group>(null)
-
-  useFrame((state) => {
-    if (astronautRef.current) {
-      const time = state.clock.elapsedTime
-      astronautRef.current.position.x = Math.sin(time * 0.3) * 4
-      astronautRef.current.position.y = Math.cos(time * 0.2) * 2 + 1
-      astronautRef.current.position.z = Math.sin(time * 0.4) * 3
-      astronautRef.current.rotation.y = time * 0.5
-      astronautRef.current.rotation.z = Math.sin(time * 0.3) * 0.2
-    }
-  })
-
-  return (
-    <group ref={astronautRef}>
-      <mesh>
-        <sphereGeometry args={[0.3, 16, 16]} />
-        <meshStandardMaterial color="#f8fafc" metalness={0.8} roughness={0.2} />
-      </mesh>
-      <mesh position={[0, -0.5, 0]}>
-        <cylinderGeometry args={[0.25, 0.3, 0.6, 16]} />
-        <meshStandardMaterial color="#e2e8f0" metalness={0.6} roughness={0.3} />
-      </mesh>
-      <mesh position={[0.3, -0.2, 0]}>
-        <sphereGeometry args={[0.1, 8, 8]} />
-        <meshStandardMaterial color="#3b82f6" emissive="#1d4ed8" emissiveIntensity={0.3} />
-      </mesh>
-      <mesh position={[-0.3, -0.2, 0]}>
-        <sphereGeometry args={[0.1, 8, 8]} />
-        <meshStandardMaterial color="#ef4444" emissive="#dc2626" emissiveIntensity={0.3} />
-      </mesh>
-    </group>
-  )
-}
-
-function FlyingSpaceship() {
-  const spaceshipRef = useRef<THREE.Group>(null)
-
-  useFrame((state) => {
-    if (spaceshipRef.current) {
-      const time = state.clock.elapsedTime
-      spaceshipRef.current.position.x = Math.cos(time * 0.4) * 5
-      spaceshipRef.current.position.y = Math.sin(time * 0.3) * 3
-      spaceshipRef.current.position.z = Math.cos(time * 0.5) * 4
-      spaceshipRef.current.rotation.y = time * 0.8
-      spaceshipRef.current.rotation.x = Math.sin(time * 0.4) * 0.3
-    }
-  })
-
-  return (
-    <group ref={spaceshipRef}>
-      <mesh>
-        <coneGeometry args={[0.3, 1.2, 8]} />
-        <meshStandardMaterial color="#8b5cf6" metalness={0.9} roughness={0.1} />
-      </mesh>
-      <mesh position={[0, -0.3, 0]}>
-        <cylinderGeometry args={[0.2, 0.15, 0.4, 8]} />
-        <meshStandardMaterial color="#a855f7" metalness={0.8} roughness={0.2} />
-      </mesh>
-      <mesh position={[0, -0.8, 0]}>
-        <sphereGeometry args={[0.05, 8, 8]} />
-        <meshStandardMaterial color="#06b6d4" emissive="#0891b2" emissiveIntensity={0.8} />
-      </mesh>
-    </group>
-  )
-}
-
-function AIBrain() {
-  const brainRef = useRef<THREE.Group>(null)
-  const neuronRefs = useRef<THREE.Mesh[]>([])
-
-  useFrame((state) => {
-    if (brainRef.current) {
-      brainRef.current.rotation.y = state.clock.elapsedTime * 0.3
-      brainRef.current.position.y = Math.sin(state.clock.elapsedTime * 0.8) * 0.3
-    }
-
-    neuronRefs.current.forEach((neuron, i) => {
-      if (neuron) {
-        neuron.scale.setScalar(1 + Math.sin(state.clock.elapsedTime * 2 + i) * 0.2)
-      }
-    })
-  })
-
-  const neurons = useMemo(
-    () =>
-      Array.from({ length: 12 }, (_, i) => {
-        const angle = (i / 12) * Math.PI * 2
-        return [Math.cos(angle) * 1.2, Math.sin(angle) * 1.2, Math.sin(i) * 0.5]
-      }),
-    [],
-  )
-
-  return (
-    <group ref={brainRef} position={[3, 1, -2]}>
-      <Sphere args={[0.8, 32, 32]}>
-        <meshStandardMaterial color="#6366f1" transparent opacity={0.6} metalness={0.3} roughness={0.4} />
-      </Sphere>
-      {neurons.map((pos, i) => (
-        <mesh key={i} ref={(el) => el && (neuronRefs.current[i] = el)} position={pos as [number, number, number]}>
-          <sphereGeometry args={[0.08, 8, 8]} />
-          <meshStandardMaterial color="#22d3ee" emissive="#0891b2" emissiveIntensity={0.2} />
-        </mesh>
-      ))}
-      <Text
-        position={[0, -1.5, 0]}
-        fontSize={0.25}
-        color="#22d3ee"
-        anchorX="center"
-        anchorY="middle"
-        font="/fonts/Geist-Bold.ttf"
-      >
-        AI NEURAL NET
-      </Text>
-    </group>
-  )
-}
-
-function FloatingCubes() {
-  const cubes = useMemo(
-    () =>
-      Array.from({ length: 6 }, (_, i) => ({
-        position: [(Math.random() - 0.5) * 8, (Math.random() - 0.5) * 6, (Math.random() - 0.5) * 4],
-        color: `hsl(${i * 60}, 70%, 60%)`,
-        speed: 1 + i * 0.1,
-      })),
-    [],
-  )
-
-  return (
-    <>
-      {cubes.map((cube, i) => (
-        <Float key={i} speed={cube.speed} rotationIntensity={0.5} floatIntensity={0.8}>
-          <mesh position={cube.position as [number, number, number]}>
-            <boxGeometry args={[0.25, 0.25, 0.25]} />
-            <meshStandardMaterial color={cube.color} transparent opacity={0.7} metalness={0.5} roughness={0.3} />
-          </mesh>
-        </Float>
-      ))}
-    </>
-  )
-}
+import { Canvas } from "@react-three/fiber"
+import { OrbitControls, Stars } from "@react-three/drei"
 
 function Enhanced3DScene() {
   return (
@@ -194,12 +14,6 @@ function Enhanced3DScene() {
       <pointLight position={[8, 8, 8]} intensity={0.8} color="#06b6d4" />
       <pointLight position={[-8, -8, -8]} intensity={0.4} color="#8b5cf6" />
       <directionalLight position={[0, 10, 5]} intensity={0.3} color="#f59e0b" />
-
-      <AnimatedSphere />
-      <AIBrain />
-      <FloatingCubes />
-      <FloatingAstronaut />
-      <FlyingSpaceship />
 
       <OrbitControls
         enableZoom={false}
@@ -284,16 +98,22 @@ export function HeroSection() {
       className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-slate-900 via-indigo-900 to-slate-900"
     >
       <div className="absolute inset-0 z-0">
-        <Canvas camera={{ position: [0, 0, 8], fov: 75 }} performance={{ min: 0.5 }} dpr={[1, 2]}>
+        <Canvas
+          camera={{ position: [0, 0, 8], fov: 75 }}
+          performance={{ min: 0.5 }}
+          dpr={[1, window.innerWidth > 768 ? 2 : 1]}
+          className="hidden sm:block"
+        >
           <Enhanced3DScene />
         </Canvas>
+        <div className="sm:hidden absolute inset-0 bg-gradient-to-br from-slate-900 via-indigo-900 to-slate-900" />
       </div>
 
       <div className="absolute inset-0 z-5 pointer-events-none">
-        {Array.from({ length: 25 }, (_, i) => (
+        {Array.from({ length: window.innerWidth > 768 ? 25 : 10 }, (_, i) => (
           <div
             key={i}
-            className="absolute text-emerald-400 text-xs matrix-rain opacity-15"
+            className="absolute text-xs matrix-rain opacity-15 text-emerald-400"
             style={{
               left: `${Math.random() * 100}%`,
               animationDelay: `${Math.random() * 20}s`,
@@ -305,99 +125,82 @@ export function HeroSection() {
         ))}
       </div>
 
-      <div className="container mx-auto px-4 z-10 relative">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 z-10 relative">
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
           <div className="text-center lg:text-left">
-            <div className="inline-flex items-center mb-4 px-6 py-3 glass-morphism rounded-full text-cyan-400 text-sm font-medium border border-cyan-400/30">
-              <Brain className="mr-2 h-4 w-4 animate-pulse" />
+            <div className="inline-flex items-center mb-4 px-3 sm:px-6 py-2 sm:py-3 rounded-full text-xs sm:text-sm font-medium border glass-morphism text-cyan-400 border-cyan-400/30">
+              <Brain className="mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4 animate-pulse" />
               <span className="cyber-glitch">{aiText}</span>
             </div>
 
-            <h1 className="text-4xl md:text-6xl lg:text-8xl font-bold mb-6 bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent animate-pulse">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-8xl font-bold mb-4 sm:mb-6 bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 animate-pulse leading-tight">
               {glitchText}
             </h1>
 
-            <h2 className="text-xl md:text-2xl lg:text-3xl mb-6 font-light text-cyan-300">
-              <Cpu className="inline mr-2 h-6 w-6" />
-              Frontend & Full-Stack Developer
-              <Zap className="inline ml-2 h-6 w-6" />
+            <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl mb-4 sm:mb-6 font-light text-cyan-300 flex items-center justify-center lg:justify-start flex-wrap">
+              <Cpu className="inline mr-1 sm:mr-2 h-4 w-4 sm:h-5 sm:w-5 lg:h-6 lg:w-6" />
+              <span className="mx-1">Frontend & Full-Stack Developer</span>
+              <Zap className="inline ml-1 sm:ml-2 h-4 w-4 sm:h-5 sm:w-5 lg:h-6 lg:w-6" />
             </h2>
 
-            <p className="text-lg text-gray-300 mb-8 max-w-2xl leading-relaxed">
-              Crafting <span className="text-cyan-400 font-semibold">next-generation</span> applications with
-              <span className="text-purple-400 font-semibold"> AI-powered</span> solutions,
-              <span className="text-emerald-400 font-semibold"> immersive 3D experiences</span>, and
-              <span className="text-amber-400 font-semibold"> cutting-edge technologies</span>.
+            <p className="text-sm sm:text-base lg:text-lg mb-6 sm:mb-8 max-w-full lg:max-w-2xl leading-relaxed text-gray-300 px-2 sm:px-0">
+              Crafting <span className="font-semibold text-cyan-400">next-generation</span> applications with
+              <span className="font-semibold text-purple-400"> AI-powered</span> solutions,
+              <span className="font-semibold text-emerald-400"> immersive 3D experiences</span>, and
+              <span className="font-semibold text-amber-400"> cutting-edge technologies</span>.
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-4 mb-8">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-6 sm:mb-8 px-2 sm:px-0">
               <Button
                 size="lg"
-                className="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white border-0 shadow-lg transform hover:scale-105 transition-all duration-300"
+                className="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white border-0 shadow-lg transform hover:scale-105 transition-all duration-300 text-sm sm:text-base"
               >
-                <Mail className="mr-2 h-4 w-4" />
+                <Mail className="mr-2 h-3 w-3 sm:h-4 sm:w-4" />
                 Neural Link Connect
               </Button>
               <Button
                 variant="outline"
                 size="lg"
-                className="border-2 border-purple-500 text-purple-400 hover:bg-purple-500 hover:text-white bg-transparent transform hover:scale-105 transition-all duration-300"
+                className="border-2 border-purple-500 text-purple-400 hover:bg-purple-500 hover:text-white bg-transparent transform hover:scale-105 transition-all duration-300 text-sm sm:text-base"
               >
-                <ArrowDown className="mr-2 h-4 w-4" />
+                <ArrowDown className="mr-2 h-3 w-3 sm:h-4 sm:w-4" />
                 Explore Matrix
               </Button>
             </div>
 
-            <div className="flex justify-center lg:justify-start space-x-8">
+            <div className="flex justify-center lg:justify-start space-x-6 sm:space-x-8">
               <a
-                href="https://github.com/sanjaybk"
+                href="https://github.com/darkie8055"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-cyan-400 hover:text-purple-400 transition-all duration-300 transform hover:scale-125"
+                className="transition-all duration-300 transform hover:scale-125 text-cyan-400 hover:text-purple-400"
               >
-                <Github className="h-8 w-8" />
+                <Github className="h-6 w-6 sm:h-7 sm:w-7 lg:h-8 lg:w-8" />
               </a>
               <a
-                href="https://linkedin.com/in/sanjay-bk"
+                href="https://linkedin.com/in/sanjay404"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-blue-400 hover:text-cyan-400 transition-all duration-300 transform hover:scale-125"
+                className="transition-all duration-300 transform hover:scale-125 text-blue-400 hover:text-cyan-400"
               >
-                <Linkedin className="h-8 w-8" />
+                <Linkedin className="h-6 w-6 sm:h-7 sm:w-7 lg:h-8 lg:w-8" />
               </a>
               <a
-                href="mailto:palakkaditsmesanjaybk@gmail.com"
-                className="text-emerald-400 hover:text-amber-400 transition-all duration-300 transform hover:scale-125"
+                href="mailto:itsmesanjaybk@gmail.com"
+                className="transition-all duration-300 transform hover:scale-125 text-emerald-400 hover:text-amber-400"
               >
-                <Mail className="h-8 w-8" />
+                <Mail className="h-6 w-6 sm:h-7 sm:w-7 lg:h-8 lg:w-8" />
               </a>
             </div>
           </div>
 
-          <div className="hidden lg:block">
+          <div className="hidden lg:block xl:block">
             <div className="relative">
-              <div className="w-96 h-96 mx-auto bg-gradient-to-br from-cyan-500/20 to-purple-600/20 rounded-full flex items-center justify-center backdrop-blur-sm border border-cyan-400/30 shadow-2xl">
-                <div className="w-80 h-80 bg-gradient-to-br from-slate-800/50 to-slate-900/50 rounded-full flex items-center justify-center text-white text-8xl font-bold backdrop-blur-sm border border-purple-400/20">
-                  <span className="bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent">
+              <div className="w-72 h-72 xl:w-96 xl:h-96 mx-auto rounded-full flex items-center justify-center backdrop-blur-sm shadow-2xl bg-gradient-to-br from-cyan-500/20 to-purple-600/20 border border-cyan-400/30">
+                <div className="w-60 h-60 xl:w-80 xl:h-80 rounded-full flex items-center justify-center text-white text-6xl xl:text-8xl font-bold backdrop-blur-sm bg-gradient-to-br from-slate-800/50 to-slate-900/50 border border-purple-400/20">
+                  <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-purple-600">
                     SBK
                   </span>
-                </div>
-              </div>
-              <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
-                <div className="absolute top-1/4 left-1/4 text-cyan-400 animate-bounce">
-                  <Cpu className="h-8 w-8" />
-                </div>
-                <div
-                  className="absolute top-1/3 right-1/4 text-purple-400 animate-bounce"
-                  style={{ animationDelay: "1s" }}
-                >
-                  <Brain className="h-8 w-8" />
-                </div>
-                <div
-                  className="absolute bottom-1/4 left-1/3 text-emerald-400 animate-bounce"
-                  style={{ animationDelay: "2s" }}
-                >
-                  <Zap className="h-8 w-8" />
                 </div>
               </div>
             </div>
@@ -405,10 +208,10 @@ export function HeroSection() {
         </div>
       </div>
 
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-        <div className="flex flex-col items-center space-y-2">
-          <ArrowDown className="h-8 w-8 text-cyan-400" />
-          <span className="text-xs text-cyan-400">SCROLL TO EXPLORE</span>
+      <div className="absolute bottom-4 sm:bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+        <div className="flex flex-col items-center space-y-1 sm:space-y-2">
+          <ArrowDown className="h-6 w-6 sm:h-8 sm:w-8 text-cyan-400" />
+          <span className="text-xs sm:text-xs text-cyan-400 hidden sm:block">SCROLL TO EXPLORE</span>
         </div>
       </div>
     </section>
