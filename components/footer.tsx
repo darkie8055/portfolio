@@ -8,17 +8,17 @@ export function Footer() {
   const socialLinks = [
     {
       icon: Github,
-      href: "https://github.com/sanjaybk",
+      href: "https://github.com/darkie8055",
       label: "GitHub",
     },
     {
       icon: Linkedin,
-      href: "https://linkedin.com/in/sanjay-bk",
+      href: "https://linkedin.com/in/sanjay404",
       label: "LinkedIn",
     },
     {
       icon: Mail,
-      href: "mailto:palakkaditsmesanjaybk@gmail.com",
+      href: "mailto:itsmesanjaybk@gmail.com",
       label: "Email",
     },
   ]

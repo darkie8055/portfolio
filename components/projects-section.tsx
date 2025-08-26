@@ -57,8 +57,7 @@ export function ProjectsSection() {
     selectedCategory === "All" ? projects : projects.filter((project) => project.category === selectedCategory)
 
   const handleGithubClick = (projectTitle: string) => {
-    // Open GitHub profile since specific repos aren't provided
-    window.open("https://github.com/sanjaybk", "_blank")
+    window.open("https://github.com/darkie8055", "_blank")
   }
 
   const handleDemoClick = (projectTitle: string) => {

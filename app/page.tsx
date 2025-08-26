@@ -7,10 +7,7 @@ import { AchievementsSection } from "@/components/achievements-section"
 import { ContactSection } from "@/components/contact-section"
 import { Footer } from "@/components/footer"
 import { Navigation } from "@/components/navigation"
-import { AIAssistant } from "@/components/ai-assistant"
-import { AIChatBubble } from "@/components/ai-chat-bubble"
 import { ParticleBackground } from "@/components/particle-background"
-import { ThreeDimensionalAIAssistant } from "@/components/3d-ai-assistant"
 
 export default function Home() {
   return (
@@ -19,9 +16,6 @@ export default function Home() {
       <Navigation />
       <section id="home" className="relative">
         <HeroSection />
-        <div className="hidden lg:block">
-          <ThreeDimensionalAIAssistant />
-        </div>
       </section>
       <section id="about" className="relative">
         <AboutSection />
@@ -42,8 +36,6 @@ export default function Home() {
         <ContactSection />
       </section>
       <Footer />
-      <AIAssistant />
-      <AIChatBubble />
     </main>
   )
 }

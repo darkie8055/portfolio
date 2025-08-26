@@ -2,24 +2,24 @@
 
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
-import { ArrowDown, Github, Linkedin, Mail, Zap, Cpu, Brain } from "lucide-react"
+import { ArrowDown, Github, Linkedin, Mail, Zap, Cpu, Brain, Download } from "lucide-react"
 import { Canvas } from "@react-three/fiber"
 import { OrbitControls, Stars } from "@react-three/drei"
 
 function Enhanced3DScene() {
   return (
     <>
-      <Stars radius={80} depth={40} count={3000} factor={3} saturation={0} fade speed={0.8} />
-      <ambientLight intensity={0.4} />
-      <pointLight position={[8, 8, 8]} intensity={0.8} color="#06b6d4" />
-      <pointLight position={[-8, -8, -8]} intensity={0.4} color="#8b5cf6" />
-      <directionalLight position={[0, 10, 5]} intensity={0.3} color="#f59e0b" />
+      <Stars radius={80} depth={40} count={2000} factor={2} saturation={0} fade speed={0.5} />
+      <ambientLight intensity={0.3} />
+      <pointLight position={[8, 8, 8]} intensity={0.6} color="#06b6d4" />
+      <pointLight position={[-8, -8, -8]} intensity={0.3} color="#8b5cf6" />
+      <directionalLight position={[0, 10, 5]} intensity={0.2} color="#f59e0b" />
 
       <OrbitControls
         enableZoom={false}
         enablePan={false}
         autoRotate
-        autoRotateSpeed={0.3}
+        autoRotateSpeed={0.2}
         maxPolarAngle={Math.PI / 1.8}
         minPolarAngle={Math.PI / 3}
       />
@@ -51,7 +51,7 @@ export function HeroSection() {
     const interval = setInterval(() => {
       setAiText(aiMessages[index])
       index = (index + 1) % aiMessages.length
-    }, 3000)
+    }, 4000)
 
     return () => clearInterval(interval)
   }, [mounted])
@@ -63,19 +63,43 @@ export function HeroSection() {
     const originalText = "SANJAY B K"
 
     const glitchInterval = setInterval(() => {
-      if (Math.random() < 0.08) {
+      if (Math.random() < 0.05) {
         const glitched = originalText
           .split("")
           .map((char) => (Math.random() < 0.1 ? glitchChars[Math.floor(Math.random() * glitchChars.length)] : char))
           .join("")
         setGlitchText(glitched)
 
-        setTimeout(() => setGlitchText(originalText), 150)
+        setTimeout(() => setGlitchText(originalText), 100)
       }
-    }, 300)
+    }, 500)
 
     return () => clearInterval(glitchInterval)
   }, [mounted])
+
+  const scrollToContact = () => {
+    const element = document.getElementById("contact")
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth", block: "start" })
+    }
+  }
+
+  const scrollToProjects = () => {
+    const element = document.getElementById("projects")
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth", block: "start" })
+    }
+  }
+
+  const downloadResume = () => {
+    // Direct download link for Google Drive file
+    const driveUrl = "https://drive.google.com/uc?export=download&id=1vfxL9pTEM0ji1jV0dSFiOf33VHMpsm9c";
+    const link = document.createElement("a");
+    link.href = driveUrl;
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
+    link.click();
+  }
 
   if (!mounted) {
     return (
@@ -100,8 +124,8 @@ export function HeroSection() {
       <div className="absolute inset-0 z-0">
         <Canvas
           camera={{ position: [0, 0, 8], fov: 75 }}
-          performance={{ min: 0.5 }}
-          dpr={[1, window.innerWidth > 768 ? 2 : 1]}
+          performance={{ min: 0.3 }}
+          dpr={[1, window.innerWidth > 768 ? 1.5 : 1]}
           className="hidden sm:block"
         >
           <Enhanced3DScene />
@@ -109,20 +133,36 @@ export function HeroSection() {
         <div className="sm:hidden absolute inset-0 bg-gradient-to-br from-slate-900 via-indigo-900 to-slate-900" />
       </div>
 
+      <style>{`
+        @keyframes matrix-fall {
+          0% { top: -2rem; opacity: 0; }
+          10% { opacity: 1; }
+          90% { opacity: 1; }
+          100% { top: 100vh; opacity: 0; }
+        }
+      `}</style>
       <div className="absolute inset-0 z-5 pointer-events-none">
-        {Array.from({ length: window.innerWidth > 768 ? 25 : 10 }, (_, i) => (
-          <div
-            key={i}
-            className="absolute text-xs matrix-rain opacity-15 text-emerald-400"
-            style={{
-              left: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * 20}s`,
-              animationDuration: `${20 + Math.random() * 10}s`,
-            }}
-          >
-            {Math.random().toString(36).substring(2, 10)}
-          </div>
-        ))}
+        {Array.from({ length: 25 }, (_, i) => {
+          // Generate a random string for each column
+          const chars = Array.from({ length: 8 }, () =>
+            String.fromCharCode(0x30A0 + Math.floor(Math.random() * 96))
+          ).join("");
+          return (
+            <div
+              key={i}
+              className="absolute text-emerald-400 text-xs opacity-15 select-none"
+              style={{
+                left: `${(i / 25) * 100}%`,
+                animation: `matrix-fall ${10 + Math.random() * 10}s linear infinite`,
+                animationDelay: `${Math.random() * 10}s`,
+                writingMode: 'vertical-rl',
+                top: 0,
+              }}
+            >
+              {chars}
+            </div>
+          );
+        })}
       </div>
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 z-10 relative">
@@ -153,18 +193,28 @@ export function HeroSection() {
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-6 sm:mb-8 px-2 sm:px-0">
               <Button
                 size="lg"
+                onClick={scrollToContact}
                 className="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white border-0 shadow-lg transform hover:scale-105 transition-all duration-300 text-sm sm:text-base"
               >
                 <Mail className="mr-2 h-3 w-3 sm:h-4 sm:w-4" />
-                Neural Link Connect
+                Get In Touch
+              </Button>
+              <Button
+                size="lg"
+                onClick={downloadResume}
+                className="bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white border-0 shadow-lg transform hover:scale-105 transition-all duration-300 text-sm sm:text-base"
+              >
+                <Download className="mr-2 h-3 w-3 sm:h-4 sm:w-4" />
+                Resume
               </Button>
               <Button
                 variant="outline"
                 size="lg"
+                onClick={scrollToProjects}
                 className="border-2 border-purple-500 text-purple-400 hover:bg-purple-500 hover:text-white bg-transparent transform hover:scale-105 transition-all duration-300 text-sm sm:text-base"
               >
                 <ArrowDown className="mr-2 h-3 w-3 sm:h-4 sm:w-4" />
-                Explore Matrix
+                View Projects
               </Button>
             </div>
 

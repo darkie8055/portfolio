@@ -13,8 +13,8 @@ const contactInfo = [
   {
     icon: Mail,
     label: "Email",
-    value: "palakkaditsmesanjaybk@gmail.com",
-    href: "mailto:palakkaditsmesanjaybk@gmail.com",
+    value: "itsmesanjaybk@gmail.com",
+    href: "mailto:itsmesanjaybk@gmail.com",
   },
   {
     icon: Phone,
@@ -34,12 +34,12 @@ const socialLinks = [
   {
     icon: Github,
     label: "GitHub",
-    href: "https://github.com/sanjaybk",
+    href: "https://github.com/darkie8055",
   },
   {
     icon: Linkedin,
     label: "LinkedIn",
-    href: "https://linkedin.com/in/sanjay-bk",
+    href: "https://linkedin.com/in/sanjay404",
   },
 ]
 
@@ -62,7 +62,7 @@ export function ContactSection() {
       const body = encodeURIComponent(
         `Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`,
       )
-      const mailtoLink = `mailto:palakkaditsmesanjaybk@gmail.com?subject=${subject}&body=${body}`
+      const mailtoLink = `mailto:itsmesanjaybk@gmail.com?subject=${subject}&body=${body}`
 
       window.location.href = mailtoLink
 

@@ -28,7 +28,7 @@ export function Navigation() {
         const element = document.getElementById(section)
         if (element) {
           const rect = element.getBoundingClientRect()
-          return rect.top <= 100 && rect.bottom >= 100
+          return rect.top <= 120 && rect.bottom >= 120
         }
         return false
       })
@@ -45,7 +45,12 @@ export function Navigation() {
   const scrollToSection = (href: string) => {
     const element = document.getElementById(href.substring(1))
     if (element) {
-      element.scrollIntoView({ behavior: "smooth", block: "start" })
+      const navHeight = 80
+      const offsetTop = element.offsetTop - navHeight
+      window.scrollTo({
+        top: offsetTop,
+        behavior: "smooth",
+      })
     }
     setIsMobileMenuOpen(false)
   }
@@ -84,7 +89,7 @@ export function Navigation() {
             ))}
           </div>
 
-          <div className="md:hidden flex items-center">
+          <div className="md:hidden flex items-center space-x-2">
             <Button
               variant="ghost"
               size="icon"
