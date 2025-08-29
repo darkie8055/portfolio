@@ -299,12 +299,9 @@
   box-shadow: 0 0 20px var(--neon-pink);
 }
 
-/* Removed dark mode scrollbar styles */
-
 /* Smooth scrolling behavior for navigation */
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 80px; /* Account for fixed navigation */
 }
 
 /* Enhanced focus states for accessibility */
@@ -334,6 +331,48 @@ textarea:focus-visible {
 
 .will-change-opacity {
   will-change: opacity;
+}
+
+.gpu-accelerated {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+.reduce-motion {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+}
+
+/* Added prefers-reduced-motion support for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Optimized 3D transforms for better performance */
+.transform-3d {
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+/* Added lazy loading optimization */
+.lazy-load {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.lazy-load.loaded {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 /* Added print styles for professional use */

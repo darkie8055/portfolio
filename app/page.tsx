@@ -14,25 +14,26 @@ export default function Home() {
     <main className="relative min-h-screen bg-gradient-to-br from-slate-900 via-indigo-900 to-slate-900">
       <ParticleBackground />
       <Navigation />
-      <section id="home" className="relative">
+      {/* Ensure sections don't add accidental top margins via browser defaults */}
+      <section id="home" className="relative mt-0">
         <HeroSection />
       </section>
-      <section id="about" className="relative">
+      <section id="about" className="relative mt-0">
         <AboutSection />
       </section>
-      <section id="projects" className="relative">
+      <section id="projects" className="relative mt-0">
         <ProjectsSection />
       </section>
-      <section id="experience" className="relative">
+      <section id="experience" className="relative mt-0">
         <ExperienceSection />
       </section>
-      <section id="skills" className="relative">
+      <section id="skills" className="relative mt-0">
         <SkillsSection />
       </section>
-      <section id="achievements" className="relative">
+      <section id="achievements" className="relative mt-0">
         <AchievementsSection />
       </section>
-      <section id="contact" className="relative">
+      <section id="contact" className="relative mt-0">
         <ContactSection />
       </section>
       <Footer />

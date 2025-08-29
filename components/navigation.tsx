@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef, useCallback } from "react"
 import { Button } from "@/components/ui/button"
 import { Menu, X } from "lucide-react"
 
@@ -18,17 +18,23 @@ export function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [activeSection, setActiveSection] = useState("home")
+  const navRef = useRef<HTMLElement | null>(null)
+
+  const getNavHeight = useCallback(() => {
+    return navRef.current?.offsetHeight ?? 0
+  }, [])
 
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50)
 
+      const threshold = getNavHeight() + 1
       const sections = navItems.map((item) => item.href.substring(1))
       const currentSection = sections.find((section) => {
         const element = document.getElementById(section)
         if (element) {
           const rect = element.getBoundingClientRect()
-          return rect.top <= 120 && rect.bottom >= 120
+          return rect.top <= threshold && rect.bottom >= threshold
         }
         return false
       })
@@ -38,25 +44,37 @@ export function Navigation() {
       }
     }
 
-    window.addEventListener("scroll", handleScroll)
+    window.addEventListener("scroll", handleScroll, { passive: true })
+    handleScroll()
     return () => window.removeEventListener("scroll", handleScroll)
-  }, [])
+  }, [getNavHeight])
 
-  const scrollToSection = (href: string) => {
-    const element = document.getElementById(href.substring(1))
-    if (element) {
-      const navHeight = 80
-      const offsetTop = element.offsetTop - navHeight
-      window.scrollTo({
-        top: offsetTop,
-        behavior: "smooth",
-      })
+  const scrollToSection = useCallback(
+    (href: string) => {
+      const element = document.getElementById(href.substring(1))
+      if (element) {
+        const top = element.getBoundingClientRect().top + window.scrollY - getNavHeight()
+        window.scrollTo({
+          top,
+          behavior: "smooth",
+        })
+      }
+      setIsMobileMenuOpen(false)
+    },
+    [getNavHeight],
+  )
+
+  useEffect(() => {
+    if (window.location.hash) {
+      setTimeout(() => {
+        scrollToSection(window.location.hash)
+      }, 0)
     }
-    setIsMobileMenuOpen(false)
-  }
+  }, [scrollToSection])
 
   return (
     <nav
+      ref={navRef}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled ? "bg-background/80 backdrop-blur-md border-b border-border" : "bg-transparent"
       }`}

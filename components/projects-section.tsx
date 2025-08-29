@@ -94,6 +94,7 @@ export function ProjectsSection() {
           {filteredProjects.map((project, index) => (
             <Card
               key={project.id}
+              id={`project-${project.id}`}
               className={`group hover:shadow-xl transition-all duration-500 hover:-translate-y-2 ${
                 project.featured ? "ring-2 ring-primary/20" : ""
               }`}
@@ -101,6 +102,7 @@ export function ProjectsSection() {
                 animationDelay: `${index * 0.1}s`,
               }}
             >
+              <a href={`#project-${project.id}`} className="block focus:outline-none" tabIndex={-1} aria-label={`Go to ${project.title}`}></a>
               <CardHeader>
                 <div className="flex items-center justify-between mb-4">
                   <div className="p-3 bg-primary/10 rounded-lg group-hover:bg-primary/20 transition-colors duration-300">
@@ -113,7 +115,7 @@ export function ProjectsSection() {
                   )}
                 </div>
                 <CardTitle className="group-hover:text-primary transition-colors duration-300">
-                  {project.title}
+                  <a href={`#project-${project.id}`} className="no-underline text-inherit hover:underline focus:underline">{project.title}</a>
                 </CardTitle>
               </CardHeader>
               <CardContent>
